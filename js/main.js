@@ -370,7 +370,7 @@
      Module: Contact form
      Static hosting (GitHub Pages) has no backend, so the form validates
      input and then opens the visitor's email app with a pre-filled
-     message via mailto:. See README for wiring a form service instead.
+     message via mailto:.
      ------------------------------------------------------------------ */
   function initContactForm() {
     var $form = $("#contact-form");
