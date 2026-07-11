@@ -1,0 +1,305 @@
+/* ==========================================================================
+   Xavier Dreschke — Portfolio
+   styles.css — design tokens, base styles, layout, backgrounds
+   (component classes live in components.css)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Design tokens
+   Monochrome system per brief: black & white primaries, gray hierarchy.
+   Both themes are keyed off Bootstrap 5.3's [data-bs-theme] attribute so
+   Bootstrap components and custom components switch together.
+   -------------------------------------------------------------------------- */
+:root,
+[data-bs-theme="light"] {
+  /* color */
+  --xd-bg: #ffffff;
+  --xd-bg-raised: #fafafa;
+  --xd-surface: #f5f5f5;
+  --xd-surface-2: #ededed;
+  --xd-ink: #0a0a0a;
+  --xd-ink-soft: #3d3d3d;
+  --xd-ink-faint: #6f6f6f;
+  --xd-line: #e4e4e4;
+  --xd-line-strong: #0a0a0a;
+  --xd-glass: rgba(255, 255, 255, 0.72);
+  --xd-shadow: 0 1px 2px rgba(10, 10, 10, 0.05), 0 12px 32px -16px rgba(10, 10, 10, 0.18);
+  --xd-shadow-lift: 0 2px 4px rgba(10, 10, 10, 0.06), 0 20px 44px -18px rgba(10, 10, 10, 0.26);
+  --xd-grid-line: rgba(10, 10, 10, 0.055);
+
+  /* type */
+  --font-display: "Bricolage Grotesque", "Archivo Black", Impact, system-ui, sans-serif;
+  --font-body: "Instrument Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  /* rhythm */
+  --section-pad: clamp(4.5rem, 10vw, 7.5rem);
+  --radius: 14px;
+  --radius-sm: 9px;
+  --nav-h: 72px;
+
+  /* motion */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur: 0.55s;
+
+  color-scheme: light;
+}
+
+[data-bs-theme="dark"] {
+  --xd-bg: #0a0a0a;
+  --xd-bg-raised: #101010;
+  --xd-surface: #151515;
+  --xd-surface-2: #1e1e1e;
+  --xd-ink: #f5f5f5;
+  --xd-ink-soft: #c9c9c9;
+  --xd-ink-faint: #969696;
+  --xd-line: #262626;
+  --xd-line-strong: #f5f5f5;
+  --xd-glass: rgba(10, 10, 10, 0.66);
+  --xd-shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 12px 32px -16px rgba(0, 0, 0, 0.7);
+  --xd-shadow-lift: 0 2px 4px rgba(0, 0, 0, 0.5), 0 20px 44px -18px rgba(0, 0, 0, 0.85);
+  --xd-grid-line: rgba(245, 245, 245, 0.05);
+
+  color-scheme: dark;
+}
+
+/* --------------------------------------------------------------------------
+   2. Base
+   -------------------------------------------------------------------------- */
+* {
+  margin: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--nav-h) + 16px);
+}
+
+body {
+  background-color: var(--xd-bg);
+  color: var(--xd-ink);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+  transition: background-color 0.35s ease, color 0.35s ease;
+}
+
+::selection {
+  background: var(--xd-ink);
+  color: var(--xd-bg);
+}
+
+h1, h2, h3, h4, h5 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.015em;
+  color: var(--xd-ink);
+}
+
+p {
+  color: var(--xd-ink-soft);
+}
+
+a {
+  color: var(--xd-ink);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: opacity 0.2s ease;
+}
+
+a:hover {
+  opacity: 0.72;
+}
+
+img, svg {
+  vertical-align: middle;
+}
+
+/* Icon sizing — inline Lucide SVG symbols */
+.icon {
+  width: 1.15em;
+  height: 1.15em;
+  stroke: currentColor;
+  stroke-width: 2;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex-shrink: 0;
+}
+
+.icon-lg { width: 1.5rem; height: 1.5rem; }
+
+/* Visible keyboard focus everywhere */
+:focus-visible {
+  outline: 2px solid var(--xd-ink);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Skip link (a11y) */
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -100%;
+  z-index: 2000;
+  padding: 0.6rem 1rem;
+  background: var(--xd-ink);
+  color: var(--xd-bg);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  top: 1rem;
+}
+
+/* --------------------------------------------------------------------------
+   3. Type utilities
+   -------------------------------------------------------------------------- */
+.mono {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--xd-ink-faint);
+}
+
+.lede {
+  font-size: clamp(1.05rem, 1.6vw, 1.2rem);
+  line-height: 1.7;
+  color: var(--xd-ink-soft);
+  max-width: 58ch;
+}
+
+/* --------------------------------------------------------------------------
+   4. Layout / sections
+   -------------------------------------------------------------------------- */
+main {
+  display: block;
+}
+
+.section {
+  padding-block: var(--section-pad);
+  border-top: 1px solid var(--xd-line);
+  position: relative;
+}
+
+.section-head {
+  display: flex;
+  align-items: baseline;
+  gap: 1.25rem;
+  margin-bottom: clamp(2.25rem, 5vw, 3.5rem);
+}
+
+.section-head .mono {
+  white-space: nowrap;
+}
+
+.section-head .rule {
+  flex: 1;
+  height: 1px;
+  background: var(--xd-line);
+  transform-origin: left center;
+}
+
+.section-title {
+  font-size: clamp(1.9rem, 4vw, 2.8rem);
+  font-weight: 800;
+  margin-top: 0.65rem;
+}
+
+.section-sub {
+  color: var(--xd-ink-faint);
+  max-width: 60ch;
+  margin-top: 0.75rem;
+}
+
+/* --------------------------------------------------------------------------
+   5. Background — engineering-grid motif (site signature texture)
+   -------------------------------------------------------------------------- */
+.bg-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(var(--xd-grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--xd-grid-line) 1px, transparent 1px);
+  background-size: 56px 56px;
+  -webkit-mask-image: radial-gradient(120% 90% at 50% 0%, #000 30%, transparent 78%);
+  mask-image: radial-gradient(120% 90% at 50% 0%, #000 30%, transparent 78%);
+}
+
+/* --------------------------------------------------------------------------
+   6. Scroll progress rail
+   -------------------------------------------------------------------------- */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 0%;
+  background: var(--xd-ink);
+  z-index: 1100;
+  transition: width 0.08s linear;
+}
+
+/* --------------------------------------------------------------------------
+   7. Reveal-on-scroll (state applied by JS; safe without JS)
+   -------------------------------------------------------------------------- */
+.reveal-ready [data-reveal] {
+  opacity: 0;
+  transform: translateY(26px);
+  transition:
+    opacity 0.7s var(--ease-out),
+    transform 0.7s var(--ease-out);
+  transition-delay: var(--reveal-delay, 0s);
+  will-change: opacity, transform;
+}
+
+.reveal-ready [data-reveal].is-revealed {
+  opacity: 1;
+  transform: none;
+}
+
+/* --------------------------------------------------------------------------
+   8. Reduced motion — hard override
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001s !important;
+  }
+  .reveal-ready [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   9. Print — the page itself becomes a passable resume
+   -------------------------------------------------------------------------- */
+@media print {
+  .xd-navbar, .scroll-progress, .to-top, .hero-canvas, .bg-grid,
+  .theme-toggle, .contact-form-card, .footer-links {
+    display: none !important;
+  }
+  body {
+    background: #fff;
+    color: #000;
+  }
+  .section {
+    padding-block: 1.5rem;
+  }
+}
